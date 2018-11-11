@@ -10,6 +10,11 @@ use App\Service\Interfaces\CurrencyApiInterface;
  */
 class NbpApiClient implements CurrencyApiInterface
 {
+
+    public function __construct()
+    {
+    }
+
     /**
      * @param string $currency
      * @return string|null
@@ -24,7 +29,7 @@ class NbpApiClient implements CurrencyApiInterface
      */
     public function getCurrentExchangeRateForAllCurrencies(): ?string
     {
-        // TODO: Implement getCurrentExchangeRateForAllCurrencies() method.
+
     }
 
 }

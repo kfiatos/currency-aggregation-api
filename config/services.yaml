@@ -29,3 +29,18 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # Defined alias for auto wiring
+    App\Service\NbpApiClient: ~
+    App\Service\Interfaces\CurrencyApiInterface: '@App\Service\NbpApiClient'
+    app.nbp_currency_api_client:
+        class: App\Service\NbpApiClient
+
+
+    ## Command bus
+    app.api.download_current_exchange_rates:
+        class: App\CommandBus\Handlers\DownloadCurrentCurrencyExchangeRatesHandler
+        arguments:
+            - '@app.nbp_currency_api_client'
+        tags:
+            - { name: tactician.handler, typehints: true }
