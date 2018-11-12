@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\CurrencyExchangeRateAverage as CurrencyExchangeRateAverageEntity;
+use App\Entity\Enum\CacheKeys;
 use App\Repository\CurrencyExchangeRateAverageRepository;
 
 /**
@@ -17,13 +18,21 @@ class CurrencyExchangeRateAverageQuery
     protected $currencyExchangeRateAverageRepository;
 
     /**
-     * CurrencyExchangeRate constructor.
+     * @var Cache
+     */
+    protected $cache;
+
+    /**
+     * CurrencyExchangeRateAverageQuery constructor.
      * @param CurrencyExchangeRateAverageRepository $currencyExchangeRateAverageRepository
+     * @param Cache $cache
      */
     public function __construct(
-        CurrencyExchangeRateAverageRepository $currencyExchangeRateAverageRepository
+        CurrencyExchangeRateAverageRepository $currencyExchangeRateAverageRepository,
+        Cache $cache
     ) {
         $this->currencyExchangeRateAverageRepository = $currencyExchangeRateAverageRepository;
+        $this->cache = $cache->getCacheService();
     }
 
     /**
@@ -40,6 +49,16 @@ class CurrencyExchangeRateAverageQuery
      */
     public function findOneByCurrencyCode(string $currencyCode): ?CurrencyExchangeRateAverageEntity
     {
-        return $this->currencyExchangeRateAverageRepository->findOneByCurrencyCode($currencyCode);
+        $cacheKey = md5(CacheKeys::AVERAGE_CURRENCY_RATE_KEY . $currencyCode);
+        $cachedItem = $this->cache->getItem($cacheKey);
+
+        if (false === $cachedItem->isHit()) {
+            $currencAverageRate = $this->currencyExchangeRateAverageRepository->findOneByCurrencyCode($currencyCode);
+            $cachedItem->set(serialize($currencAverageRate));
+            $this->cache->save($cachedItem);
+        } else  {
+            $currencAverageRate = unserialize($cachedItem->get());
+        }
+        return $currencAverageRate;
     }
 }

@@ -6,6 +6,12 @@
 parameters:
     locale: 'en'
 
+    # Redis config
+    redis.host: '%env(REDIS_HOST)%'
+    redis.port: '%env(REDIS_PORT)%'
+
+
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -30,9 +36,14 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    #Cache service
+    app.nbp_currency_api_cache:
+        class: App\Service\Cache
+
     # Defined alias for auto wiring
     App\Service\NbpApiClient: ~
     App\Service\Interfaces\CurrencyApiInterface: '@App\Service\NbpApiClient'
+
     app.nbp_currency_api_client:
         class: App\Service\NbpApiClient
 
@@ -58,6 +69,7 @@ services:
         arguments:
             - '@app.average_exchange_currency_rates_calculator'
             - '@app.currency_exchange_rate_query_service'
+            - '@app.nbp_currency_api_cache'
         tags:
             - { name: tactician.handler, typehints: true }
 
