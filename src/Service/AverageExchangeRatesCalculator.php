@@ -32,16 +32,16 @@ class AverageExchangeRatesCalculator
      * AverageExchangeRatesCalculator constructor.
      * @param \App\Service\CurrencyExchangeRate $currencyExchangeRateService
      * @param \App\Service\CurrencyExchangeRateAverage $currencyExchangeRateAverageService
-     * @param CurrencyExchangeRateAverageQuery $currencyExchangeRateAverageQyeryService
+     * @param CurrencyExchangeRateAverageQuery $currencyExchangeRateAverageQueryService
      */
     public function __construct(
         CurrencyExchangeRateService $currencyExchangeRateService,
         CurrencyExchangeRateAverageService $currencyExchangeRateAverageService,
-        CurrencyExchangeRateAverageQuery $currencyExchangeRateAverageQyeryService
+        CurrencyExchangeRateAverageQuery $currencyExchangeRateAverageQueryService
     ) {
         $this->currencyExchangeRateService = $currencyExchangeRateService;
         $this->currencyExchangeRateAverageService =$currencyExchangeRateAverageService;
-        $this->currencyExchangeRateAverageQueryService = $currencyExchangeRateAverageQyeryService;
+        $this->currencyExchangeRateAverageQueryService = $currencyExchangeRateAverageQueryService;
     }
 
     /**

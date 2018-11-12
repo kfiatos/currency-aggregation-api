@@ -20,6 +20,9 @@ class ExchangeRatesController extends AbstractController
 {
     /**
      * @Annotations\Get("/exchange_rates/get_currency_codes")
+     * @param CurrencyExchangeRateQuery $currencyExchangeRateQuery
+     * @param AdapterInterface $cache
+     * @return View
      */
     public function getCurrencyCodes(CurrencyExchangeRateQuery $currencyExchangeRateQuery, AdapterInterface $cache)
     {

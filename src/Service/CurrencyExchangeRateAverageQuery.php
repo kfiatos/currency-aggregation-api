@@ -53,12 +53,12 @@ class CurrencyExchangeRateAverageQuery
         $cachedItem = $this->cache->getItem($cacheKey);
 
         if (false === $cachedItem->isHit()) {
-            $currencAverageRate = $this->currencyExchangeRateAverageRepository->findOneByCurrencyCode($currencyCode);
-            $cachedItem->set(serialize($currencAverageRate));
+            $currencyExchangeRateAverage = $this->currencyExchangeRateAverageRepository->findOneByCurrencyCode($currencyCode);
+            $cachedItem->set(serialize($currencyExchangeRateAverage));
             $this->cache->save($cachedItem);
         } else  {
-            $currencAverageRate = unserialize($cachedItem->get());
+            $currencyExchangeRateAverage = unserialize($cachedItem->get());
         }
-        return $currencAverageRate;
+        return $currencyExchangeRateAverage;
     }
 }

@@ -46,7 +46,7 @@ class CalculateAverageExchangeRatesHandler
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function handle(CalculateAverageExchangeRatesCommand $command) {
-        //should be moved elswhere - for the sakes of simplicity stays here for now
+        //should be moved elsewhere - for the sakes of simplicity stays here for now
         //Clear cache before update
         $this->cache->getCacheService()->clear();
         $currencyExchangeRates = $this->currencyExchangeRateQueryService->findAll();
