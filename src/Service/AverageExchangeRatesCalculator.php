@@ -2,12 +2,15 @@
 
 namespace App\Service;
 
-
 use App\Entity\CurrencyExchangeRate;
 use App\Entity\CurrencyExchangeRateAverage;
 use App\Service\CurrencyExchangeRate as CurrencyExchangeRateService;
 use App\Service\CurrencyExchangeRateAverage as CurrencyExchangeRateAverageService;
 
+/**
+ * Class AverageExchangeRatesCalculator
+ * @package App\Service
+ */
 class AverageExchangeRatesCalculator
 {
     /**
@@ -21,16 +24,24 @@ class AverageExchangeRatesCalculator
     protected $currencyExchangeRateAverageService;
 
     /**
+     * @var CurrencyExchangeRateAverageQuery
+     */
+    protected $currencyExchangeRateAverageQueryService;
+
+    /**
      * AverageExchangeRatesCalculator constructor.
-     * @param CurrencyExchangeRateService $currencyExchangeRateService
-     * @param CurrencyExchangeRateAverageService $currencyExchangeRateAverageService
+     * @param \App\Service\CurrencyExchangeRate $currencyExchangeRateService
+     * @param \App\Service\CurrencyExchangeRateAverage $currencyExchangeRateAverageService
+     * @param CurrencyExchangeRateAverageQuery $currencyExchangeRateAverageQyeryService
      */
     public function __construct(
         CurrencyExchangeRateService $currencyExchangeRateService,
-        CurrencyExchangeRateAverageService $currencyExchangeRateAverageService
+        CurrencyExchangeRateAverageService $currencyExchangeRateAverageService,
+        CurrencyExchangeRateAverageQuery $currencyExchangeRateAverageQyeryService
     ) {
         $this->currencyExchangeRateService = $currencyExchangeRateService;
-        $this->currencyExchangeRateAverageService = $currencyExchangeRateAverageService;
+        $this->currencyExchangeRateAverageService =$currencyExchangeRateAverageService;
+        $this->currencyExchangeRateAverageQueryService = $currencyExchangeRateAverageQyeryService;
     }
 
     /**
@@ -44,7 +55,7 @@ class AverageExchangeRatesCalculator
         /** @var \App\Entity\CurrencyExchangeRate $currencyExchangeRate */
         foreach ($currencyExchangeRates as $currencyExchangeRate) {
                 $averageExchangeRate =
-                    $this->currencyExchangeRateAverageService->findOneByCurrencyCode($currencyExchangeRate->getCurrencyCode());
+                    $this->currencyExchangeRateAverageQueryService->findOneByCurrencyCode($currencyExchangeRate->getCurrencyCode());
 
             if (empty($averageExchangeRate)) {
                 $averageExchangeRate = new CurrencyExchangeRateAverage();
@@ -68,7 +79,6 @@ class AverageExchangeRatesCalculator
 
             $this->currencyExchangeRateAverageService->store($averageExchangeRate);
         }
-
     }
 
     /**

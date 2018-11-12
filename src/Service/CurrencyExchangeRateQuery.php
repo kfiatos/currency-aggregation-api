@@ -51,4 +51,12 @@ class CurrencyExchangeRateQuery
         return $this->currencyExchangeRateRepository->findOneByCurrencyCode($currencyCode);
     }
 
+    /**
+     * @return array
+     */
+    public function findAllCurrencyCodes()
+    {
+        return $this->currencyExchangeRateRepository->findAllCurrencyCodes();
+    }
+
 }

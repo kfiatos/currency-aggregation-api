@@ -94,6 +94,18 @@ class CurrencyExchangeRateRepository extends ServiceEntityRepository
     }
 
     /**
+     * @return array
+     */
+    public function findAllCurrencyCodes(): array
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->select(['c.currency_description as currency, c.currency_code as code'])
+            ->getQuery()->getArrayResult();
+
+        return $qb;
+    }
+
+    /**
      * @param CurrencyExchangeRate $currencyExchangeRate
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

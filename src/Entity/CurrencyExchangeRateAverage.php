@@ -59,7 +59,10 @@ class CurrencyExchangeRateAverage
         return $this;
     }
 
-    public function getAverageRate()
+    /**
+     * @return int|float
+     */
+    public function getAverageRate(): float
     {
         return $this->averageRate;
     }

@@ -37,23 +37,6 @@ class CurrencyExchangeRateAverage
     }
 
     /**
-     * @return CurrencyExchangeRateAverageEntity[]
-     */
-    public function findAll()
-    {
-        return $this->currencyExchangeRateAverageRepository->findAll();
-    }
-
-    /**
-     * @param string $currencyCode
-     * @return CurrencyExchangeRateAverageEntity|null
-     */
-    public function findOneByCurrencyCode(string $currencyCode): ?CurrencyExchangeRateAverageEntity
-    {
-        return $this->currencyExchangeRateAverageRepository->findOneByCurrencyCode($currencyCode);
-    }
-
-    /**
      * @param CurrencyExchangeRateAverageEntity $entity
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
