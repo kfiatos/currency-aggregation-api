@@ -52,32 +52,6 @@ class CurrencyExchangeRate
     }
 
     /**
-     * @return CurrencyExchangeRateEntity[]
-     */
-    public function findAll()
-    {
-        return $this->currencyExchangeRateRepository->findAll();
-    }
-
-    /**
-     * @param int $id
-     * @return CurrencyExchangeRateEntity|null
-     */
-    public function findOneById(int $id): ?CurrencyExchangeRateEntity
-    {
-        return $this->currencyExchangeRateRepository->findOneById($id);
-    }
-
-    /**
-     * @param string $currencyCode
-     * @return CurrencyExchangeRateEntity|null
-     */
-    public function findOneByCurrencyCode(string $currencyCode)
-    {
-        return $this->currencyExchangeRateRepository->findOneByCurrencyCode($currencyCode);
-    }
-
-    /**
      * @param CurrencyExchangeRateEntity $entity
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException

@@ -50,14 +50,14 @@ class CurrencyExchangeRate
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_date;
+    private $updated_date;
 
     /**
      * CurrencyRate constructor.
      */
     public function __construct()
     {
-        $this->created_date = new \DateTime();
+        $this->updated_date = new \DateTime();
     }
 
     public function getId(): ?int
@@ -113,19 +113,22 @@ class CurrencyExchangeRate
         return $this;
     }
 
-    public function getCreatedDate(): ?\DateTimeInterface
+    public function getUpdatedDate(): ?\DateTimeInterface
     {
-        return $this->created_date;
+        return $this->updated_date;
     }
 
-    public function setCreatedDate(\DateTimeInterface $created_date): self
+    public function setUpdatedDate(\DateTimeInterface $updated_date): self
     {
-        $this->created_date = $created_date;
+        $this->updated_date = $updated_date;
 
         return $this;
     }
 
-    public function getRate()
+    /**
+     * @return float
+     */
+    public function getRate(): float
     {
         return $this->rate;
     }

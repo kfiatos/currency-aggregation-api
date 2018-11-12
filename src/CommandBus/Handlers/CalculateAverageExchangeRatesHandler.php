@@ -5,8 +5,7 @@ namespace App\CommandBus\Handlers;
 
 use App\CommandBus\Commands\CalculateAverageExchangeRatesCommand;
 use App\Service\AverageExchangeRatesCalculator;
-use App\Service\CurrencyExchangeRate;
-use App\Service\CurrencyExchangeRateAverage;
+use App\Service\CurrencyExchangeRateQuery;
 
 class CalculateAverageExchangeRatesHandler
 {
@@ -16,30 +15,30 @@ class CalculateAverageExchangeRatesHandler
     protected $exchangeRateCalculatorService;
 
     /**
-     * @var CurrencyExchangeRate
+     * @var CurrencyExchangeRateQuery
      */
-    protected $currencyExchangeRateService;
+    protected $currencyExchangeRateQueryService;
 
     /**
      * CalculateAverageExchangeRatesHandler constructor.
      * @param AverageExchangeRatesCalculator $exchangeRateCalculatorService
-     * @param CurrencyExchangeRate $currencyExchangeRateService
+     * @param CurrencyExchangeRateQuery $currencyExchangeRateQueryService
      */
     public function __construct(
         AverageExchangeRatesCalculator $exchangeRateCalculatorService,
-        CurrencyExchangeRate $currencyExchangeRateService
+        CurrencyExchangeRateQuery $currencyExchangeRateQueryService
     ) {
         $this->exchangeRateCalculatorService = $exchangeRateCalculatorService;
-        $this->currencyExchangeRateService = $currencyExchangeRateService;
+        $this->currencyExchangeRateQueryService = $currencyExchangeRateQueryService;
     }
-
 
     /**
      * @param CalculateAverageExchangeRatesCommand $command
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
-
     public function handle(CalculateAverageExchangeRatesCommand $command) {
-        $currencyExchangeRates = $this->currencyExchangeRateService->findAll();
+        $currencyExchangeRates = $this->currencyExchangeRateQueryService->findAll();
         $this->exchangeRateCalculatorService
             ->updateComputedAverageExchangeRates($currencyExchangeRates);
     }

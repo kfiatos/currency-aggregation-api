@@ -2,32 +2,20 @@
 
 namespace App\Controller\Rest;
 
-use App\CommandBus\Commands\DownloadCurrentCurrencyExchangeRatesCommand;
-use App\Exceptions\DownloadCurrencyException;
-use League\Tactician\CommandBus;
+use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use FOS\RestBundle\Controller\Annotations;
 
 class ExchangeRatesController extends AbstractController
 {
     /**
-     * @Route("/exchange_rates/get_currency_codes", name="api_get_currency_codes")
-     * @param CommandBus $commandBus
-     * @return Response
+     * @Annotations\Get("/exchange_rates/get_currency_codes")
      */
-    public function index(CommandBus $commandBus)
+    public function getCurrencyCodes(Request $request)
     {
-        $command = new DownloadCurrentCurrencyExchangeRatesCommand();
-        try {
-            $commandBus->handle($command);
-        }catch (DownloadCurrencyException $exception) {
-            //silence
-        }
 
+        return View::create(3, 200);
 
-        return $this->render('test/index.html.twig', [
-            'controller_name' => 'TestController',
-        ]);
     }
 }

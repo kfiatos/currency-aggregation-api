@@ -1,11 +1,11 @@
 <?php
 
-
 namespace App\CommandBus\Handlers;
 
 
 use App\CommandBus\Commands\IncrementCurrentExchangeRateComputedCountCommand;
 use App\Service\CurrencyExchangeRate;
+use App\Service\CurrencyExchangeRateQuery;
 
 class IncrementCurrentExchangeRateComputedCountHandler
 {
@@ -15,12 +15,21 @@ class IncrementCurrentExchangeRateComputedCountHandler
     protected $currencyExchangeRateService;
 
     /**
-     * IncrementCurrentExchangeRateComputedCounterHandler constructor.
-     * @param CurrencyExchangeRate $currencyExchangeRateService
+     * @var CurrencyExchangeRateQuery
      */
-    public function __construct(CurrencyExchangeRate $currencyExchangeRateService)
-    {
+    protected $currencyExchangeRateQueryService;
+
+    /**
+     * IncrementCurrentExchangeRateComputedCountHandler constructor.
+     * @param CurrencyExchangeRate $currencyExchangeRateService
+     * @param CurrencyExchangeRateQuery $currencyExchangeRateQueryService
+     */
+    public function __construct(
+        CurrencyExchangeRate $currencyExchangeRateService,
+        CurrencyExchangeRateQuery $currencyExchangeRateQueryService
+    ) {
         $this->currencyExchangeRateService = $currencyExchangeRateService;
+        $this->currencyExchangeRateQueryService = $currencyExchangeRateQueryService;
     }
 
     /**
@@ -30,7 +39,7 @@ class IncrementCurrentExchangeRateComputedCountHandler
      */
     public function handle(IncrementCurrentExchangeRateComputedCountCommand $command)
     {
-        $entity = $this->currencyExchangeRateService->findOneByCurrencyCode($command->getCurrencyCode());
+        $entity = $this->currencyExchangeRateQueryService->findOneByCurrencyCode($command->getCurrencyCode());
         $entity->incrementComputedCount();
         $this->currencyExchangeRateService->store($entity);
     }

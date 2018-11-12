@@ -80,11 +80,9 @@ class AverageExchangeRatesCalculator
         CurrencyExchangeRate $currency,
         CurrencyExchangeRateAverage $rateAverage
     ) {
-        $currentAverageRateValue = bcmul((string)$rateAverage->getAverageRate(), (string)$currency->getComputedCount());
-
-        $nextAverageRateValue =
-            bcdiv(bcadd($currentAverageRateValue, (string)$currency->getRate()), (string)($currency->getComputedCount() + 1));
-        return $nextAverageRateValue;
+        $nextAverageRate =
+            (($rateAverage->getAverageRate() * $currency->getComputedCount()) + $currency->getRate()) / ($currency->getComputedCount() + 1);
+        return $nextAverageRate;
     }
 
 

@@ -18,6 +18,14 @@ class TestController extends AbstractController
      */
     public function index(CommandBus $commandBus)
     {
+        $command = new DownloadCurrentCurrencyExchangeRatesCommand();
+        try {
+            $commandBus->handle($command);
+        }catch (DownloadCurrencyException $exception) {
+            //silence
+        }
+
+
         return $this->render('test/index.html.twig', [
             'controller_name' => 'TestController',
         ]);
