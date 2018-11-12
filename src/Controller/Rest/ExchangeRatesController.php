@@ -2,11 +2,15 @@
 
 namespace App\Controller\Rest;
 
+use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use FOS\RestBundle\Controller\Annotations;
 
+/**
+ * Class ExchangeRatesController
+ * @package App\Controller\Rest
+ */
 class ExchangeRatesController extends AbstractController
 {
     /**

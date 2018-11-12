@@ -3,10 +3,14 @@
 namespace App\Service;
 
 use App\CommandBus\Commands\IncrementCurrentExchangeRateComputedCountCommand;
+use App\Entity\CurrencyExchangeRateAverage as CurrencyExchangeRateAverageEntity;
 use App\Repository\CurrencyExchangeRateAverageRepository;
 use League\Tactician\CommandBus;
-use App\Entity\CurrencyExchangeRateAverage as CurrencyExchangeRateAverageEntity;
 
+/**
+ * Class CurrencyExchangeRateAverage
+ * @package App\Service
+ */
 class CurrencyExchangeRateAverage
 {
     /**

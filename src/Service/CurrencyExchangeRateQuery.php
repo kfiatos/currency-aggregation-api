@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
-use App\Repository\CurrencyExchangeRateRepository;
 use App\Entity\CurrencyExchangeRate;
+use App\Repository\CurrencyExchangeRateRepository;
 
 /**
  * Class CurrencyExchangeRateQueryService

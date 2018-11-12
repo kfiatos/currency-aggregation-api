@@ -4,8 +4,8 @@ namespace App\Service;
 
 use App\CommandBus\Commands\CalculateAverageExchangeRatesCommand;
 use App\Dto\PreparedCurrencyTableDto;
-use App\Repository\CurrencyExchangeRateRepository;
 use App\Entity\CurrencyExchangeRate as CurrencyExchangeRateEntity;
+use App\Repository\CurrencyExchangeRateRepository;
 use League\Tactician\CommandBus;
 
 /**

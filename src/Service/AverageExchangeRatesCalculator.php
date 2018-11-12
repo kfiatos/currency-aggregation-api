@@ -3,8 +3,8 @@
 namespace App\Service;
 
 
-use App\Entity\CurrencyExchangeRateAverage;
 use App\Entity\CurrencyExchangeRate;
+use App\Entity\CurrencyExchangeRateAverage;
 use App\Service\CurrencyExchangeRate as CurrencyExchangeRateService;
 use App\Service\CurrencyExchangeRateAverage as CurrencyExchangeRateAverageService;
 
