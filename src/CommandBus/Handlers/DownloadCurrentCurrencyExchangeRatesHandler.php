@@ -3,6 +3,7 @@
 namespace App\CommandBus\Handlers;
 
 use App\CommandBus\Commands\DownloadCurrentCurrencyExchangeRatesCommand;
+use App\Service\CurrencyExchangeRate;
 use App\Service\Interfaces\CurrencyApiInterface;
 
 /**
@@ -16,9 +17,20 @@ class DownloadCurrentCurrencyExchangeRatesHandler
      */
     protected $currencyApiClient;
 
-    public function __construct(CurrencyApiInterface $currencyApiClient)
+    /**
+     * @var CurrencyExchangeRate
+     */
+    protected $exchangeRatesService;
+
+    /**
+     * DownloadCurrentCurrencyExchangeRatesHandler constructor.
+     * @param CurrencyApiInterface $currencyApiClient
+     * @param CurrencyExchangeRate $exchangeRatesService
+     */
+    public function __construct(CurrencyApiInterface $currencyApiClient, CurrencyExchangeRate $exchangeRatesService)
     {
         $this->currencyApiClient = $currencyApiClient;
+        $this->exchangeRatesService = $exchangeRatesService;
     }
 
     /**
@@ -26,6 +38,7 @@ class DownloadCurrentCurrencyExchangeRatesHandler
      */
     public function handle(DownloadCurrentCurrencyExchangeRatesCommand $command): void
     {
-        $this->currencyApiClient->getCurrentExchangeRateForAllCurrencies();
+        $apiData = $this->currencyApiClient->getCurrentExchangeRateForAllCurrencies();
+        $this->exchangeRatesService->storeApiData($apiData);
     }
 }

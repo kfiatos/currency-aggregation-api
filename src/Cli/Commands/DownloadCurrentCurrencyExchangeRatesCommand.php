@@ -4,15 +4,16 @@ namespace App\Cli\Commands;
 
 
 use League\Tactician\CommandBus;
-use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use App\CommandBus\Commands\DownloadCurrentCurrencyExchangeRatesCommand as DownloadCommand;
 
 /**
  * Class DownloadCurrentCurrencyExchangeRatesCommand
  * @package App\Cli\Commands
  */
-class DownloadCurrentCurrencyExchangeRatesCommand extends Command
+class DownloadCurrentCurrencyExchangeRatesCommand extends BaseCommand
 {
     /**
      * @var CommandBus
@@ -34,15 +35,21 @@ class DownloadCurrentCurrencyExchangeRatesCommand extends Command
     {
         $this
             ->setName('app:download-current-currency-exchange-rates')
-
             ->setDescription('Downloads current currency exchange rates')
-
             ->setHelp
             ('This command allows you to download current currency rates and store them in database for later usage');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return void
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
+        $output->writeln('Currency rates synchronization with NBP WEB Api started');
+        $command = new DownloadCommand();
+        $this->commandBus->handle($command);
+        $output->writeln('Currency rates synchronization with NBP WEB Api ended');
     }
 }

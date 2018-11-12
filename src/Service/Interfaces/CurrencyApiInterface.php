@@ -3,6 +3,8 @@
 namespace App\Service\Interfaces;
 
 
+use App\Dto\RawCurrencyTableDto;
+
 interface CurrencyApiInterface
 {
     /**
@@ -12,7 +14,7 @@ interface CurrencyApiInterface
     public function getCurrentExchangeRateForCurrency(string $currency): ?string;
 
     /**
-     * @return string|null
+     * @return RawCurrencyTableDto[]|null
      */
-    public function getCurrentExchangeRateForAllCurrencies(): ?string;
+    public function getCurrentExchangeRateForAllCurrencies(): ?array ;
 }

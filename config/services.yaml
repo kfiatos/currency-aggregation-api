@@ -36,11 +36,31 @@ services:
     app.nbp_currency_api_client:
         class: App\Service\NbpApiClient
 
+    app.average_exchange_currency_rates_calculator:
+        class: App\Service\AverageExchangeRatesCalculator
+
+    app.currency_exchange_rate_service:
+        class: App\Service\CurrencyExchangeRate
 
     ## Command bus
     app.api.download_current_exchange_rates:
         class: App\CommandBus\Handlers\DownloadCurrentCurrencyExchangeRatesHandler
         arguments:
             - '@app.nbp_currency_api_client'
+        tags:
+            - { name: tactician.handler, typehints: true }
+
+    app.api.calculate_average_exchange_rates:
+        class: App\CommandBus\Handlers\CalculateAverageExchangeRatesHandler
+        arguments:
+            - '@app.average_exchange_currency_rates_calculator'
+            - '@app.currency_exchange_rate_service'
+        tags:
+            - { name: tactician.handler, typehints: true }
+
+    app.api.increment_currency_exchange_rate_computed_count:
+        class: App\CommandBus\Handlers\IncrementCurrentExchangeRateComputedCountHandler
+        arguments:
+            - '@app.currency_exchange_rate_service'
         tags:
             - { name: tactician.handler, typehints: true }
