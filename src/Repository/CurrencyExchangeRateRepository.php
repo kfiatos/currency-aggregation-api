@@ -99,8 +99,10 @@ class CurrencyExchangeRateRepository extends ServiceEntityRepository
     public function findAllCurrencyCodes(): array
     {
         $qb = $this->createQueryBuilder('c')
-            ->select(['c.currency_description as currency, c.currency_code as code'])
-            ->getQuery()->getArrayResult();
+            ->getQuery()
+            ->setCacheable(true)
+            ->setLifetime(84600)
+            ->getResult();
 
         return $qb;
     }

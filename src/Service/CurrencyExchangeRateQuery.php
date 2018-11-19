@@ -53,6 +53,7 @@ class CurrencyExchangeRateQuery
     /**
      * @param string $currencyCode
      * @return CurrencyExchangeRate|mixed|null
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     public function findOneByCurrencyCode(string $currencyCode)
     {
@@ -77,13 +78,13 @@ class CurrencyExchangeRateQuery
         $cacheKey = md5(CacheKeys::GET_CURRENCY_CODES_KEY);
         $cachedItem = $this->cache->getItem($cacheKey);
 
-        if (false === $cachedItem->isHit()) {
+//        if (false === $cachedItem->isHit()) {
             $currencyCodes = $this->currencyExchangeRateRepository->findAllCurrencyCodes();
-            $cachedItem->set(serialize($currencyCodes));
-            $this->cache->save($cachedItem);
-        } else  {
-            $currencyCodes = unserialize($cachedItem->get());
-        }
+//            $cachedItem->set(serialize($currencyCodes));
+//            $this->cache->save($cachedItem);
+//        } else  {
+//            $currencyCodes = unserialize($cachedItem->get());
+//        }
 
         return $currencyCodes;
     }

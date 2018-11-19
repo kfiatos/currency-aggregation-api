@@ -4,6 +4,8 @@ namespace App\Controller\Web;
 
 use App\CommandBus\Commands\DownloadCurrentCurrencyExchangeRatesCommand;
 use App\Exceptions\DownloadCurrencyException;
+use App\Service\CurrencyExchangeRateQuery;
+use FOS\RestBundle\View\View;
 use League\Tactician\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,17 +18,22 @@ class TestController extends AbstractController
      * @param CommandBus $commandBus
      * @return Response
      */
-    public function index(CommandBus $commandBus)
+    public function index(CommandBus $commandBus, CurrencyExchangeRateQuery $currencyExchangeRateQuery)
     {
-        $command = new DownloadCurrentCurrencyExchangeRatesCommand();
-        try {
-            $commandBus->handle($command);
-        }catch (DownloadCurrencyException $exception) {
-            //silence
-        }
+        $currencyExchangeRates = $currencyExchangeRateQuery->findAllCurrencyCodes();
+//        return View::create($currencyExchangeRates, Response::HTTP_OK);
+//        die;
+
+//        $command = new DownloadCurrentCurrencyExchangeRatesCommand();
+//        try {
+//            $commandBus->handle($command);
+//        }catch (DownloadCurrencyException $exception) {
+//            //silence
+//        }
 
         return $this->render('test/index.html.twig', [
             'controller_name' => 'TestController',
+            'rates' => $currencyExchangeRates
         ]);
     }
 }

@@ -5,8 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="CurrencyExchangeRateRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CurrencyExchangeRateRepository")
  * @ORM\Table(name="currency_exchange_rate",uniqueConstraints={@ORM\UniqueConstraint(name="currency_code_effective_date_unique_idx", columns={"currency_code", "effective_date"})})
+ * @ORM\Cache(usage="NONSTRICT_READ_WRITE")
  */
 class CurrencyExchangeRate
 {

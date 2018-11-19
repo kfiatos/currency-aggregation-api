@@ -4,13 +4,12 @@ namespace App\Controller\Rest;
 
 use App\Dto\Api\AverageCurrencyExchangeRateDto;
 use App\Dto\Api\CurrentCurrencyExchangeRateDto;
-use App\Entity\Enum\CacheKeys;
 use App\Service\CurrencyExchangeRateAverageQuery;
 use App\Service\CurrencyExchangeRateQuery;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\View\View;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Cache\Adapter\AdapterInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ExchangeRatesController
@@ -21,63 +20,50 @@ class ExchangeRatesController extends AbstractController
     /**
      * @Annotations\Get("/exchange_rates/get_currency_codes")
      * @param CurrencyExchangeRateQuery $currencyExchangeRateQuery
-     * @param AdapterInterface $cache
      * @return View
      */
-    public function getCurrencyCodes(CurrencyExchangeRateQuery $currencyExchangeRateQuery, AdapterInterface $cache)
+    public function getCurrencyCodes(CurrencyExchangeRateQuery $currencyExchangeRateQuery): View
     {
-        $cacheKey = CacheKeys::GET_CURRENCY_CODES_KEY;
-        $cachedItem = $cache->getItem($cacheKey);
+        $currencyExchangeRates = $currencyExchangeRateQuery->findAllCurrencyCodes();
+        if (empty($currencyExchangeRates)) {
+            return View::create($currencyExchangeRates, Response::HTTP_NO_CONTENT);
 
-        if (false === $cachedItem->isHit()) {
-            $currencyExchangeRates = $currencyExchangeRateQuery->findAllCurrencyCodes();
-            $cachedItem->set(serialize($currencyExchangeRates));
-            $cache->save($cachedItem);
-        } else  {
-            $currencyExchangeRates = unserialize($cachedItem->get());
         }
-        return View::create($currencyExchangeRates, 200);
+        return View::create($currencyExchangeRates, Response::HTTP_OK);
     }
 
     /**
      * @Annotations\Get("/exchange_rates/get_current_rate/{code}")
      * @Annotations\QueryParam(name="code", requirements={"code : \d+"}, description="Get exchange rate for given currency code.")
      * @param string $code
+     * @param CurrencyExchangeRateQuery $currencyExchangeRateQuery
      * @return View
      */
-    public function getCurrentCurrencyRate(string $code, CurrencyExchangeRateQuery $currencyExchangeRateQuery, AdapterInterface $cache)
+    public function getCurrentCurrencyRate(string $code, CurrencyExchangeRateQuery $currencyExchangeRateQuery): View
     {
         $currencyExchangeRate = $currencyExchangeRateQuery->findOneByCurrencyCode($code);
 
         if ($currencyExchangeRate) {
             $dto = new CurrentCurrencyExchangeRateDto($currencyExchangeRate);
-            return View::create($dto->getData(), 200);
+            return View::create($dto->getData(), Response::HTTP_OK);
         }
-        return View::create("Not found", 404);
+        return View::create("Not found", Response::HTTP_NO_CONTENT);
     }
 
     /**
      * @Annotations\Get("/exchange_rates/get_average_rate/{code}")
      * @Annotations\QueryParam(name="code", requirements={"code : \d+"}, description="Get exchange rate for given currency code.")
      * @param string $code
+     * @param CurrencyExchangeRateAverageQuery $currencyExchangeRateAverageQuery
      * @return View
      */
-    public function geAverageCurrencyRate(string $code, CurrencyExchangeRateAverageQuery $currencyExchangeRateAverageQuery, AdapterInterface $cache)
+    public function geAverageCurrencyRate(string $code, CurrencyExchangeRateAverageQuery $currencyExchangeRateAverageQuery)
     {
-        $cacheKey = md5(CacheKeys::AVERAGE_CURRENCY_RATE_KEY . $code);
-        $cachedItem = $cache->getItem($cacheKey);
-
-        if (false === $cachedItem->isHit()) {
-            $currencyAverageExchangeRate = $currencyExchangeRateAverageQuery->findOneByCurrencyCode($code);
-            $cachedItem->set(serialize($currencyAverageExchangeRate));
-            $cache->save($cachedItem);
-        } else  {
-            $currencyAverageExchangeRate = unserialize($cachedItem->get());
-        }
+        $currencyAverageExchangeRate = $currencyExchangeRateAverageQuery->findOneByCurrencyCode($code);
         if ($currencyAverageExchangeRate) {
             $dto = new AverageCurrencyExchangeRateDto($currencyAverageExchangeRate);
-            return View::create($dto->getData(), 200);
+            return View::create($dto->getData(), Response::HTTP_OK);
         }
-        return View::create("Not found", 404);
+        return View::create("Not found", Response::HTTP_NO_CONTENT);
     }
 }
