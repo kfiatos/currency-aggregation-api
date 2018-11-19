@@ -42,8 +42,6 @@ class CalculateAverageExchangeRatesHandler
 
     /**
      * @param CalculateAverageExchangeRatesCommand $command
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function handle(CalculateAverageExchangeRatesCommand $command) {
         //should be moved elsewhere - for the sakes of simplicity stays here for now

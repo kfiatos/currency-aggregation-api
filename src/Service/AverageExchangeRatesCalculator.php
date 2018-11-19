@@ -45,17 +45,15 @@ class AverageExchangeRatesCalculator
     }
 
     /**
-     * @param CurrencyExchangeRate[]
-     * @param CurrencyExchangeRateAverage[]
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @param array $currencyExchangeRates
      */
     public function updateComputedAverageExchangeRates(array $currencyExchangeRates)
     {
         /** @var \App\Entity\CurrencyExchangeRate $currencyExchangeRate */
         foreach ($currencyExchangeRates as $currencyExchangeRate) {
                 $averageExchangeRate =
-                    $this->currencyExchangeRateAverageQueryService->findOneByCurrencyCode($currencyExchangeRate->getCurrencyCode());
+                    $this->currencyExchangeRateAverageQueryService
+                        ->findOneByCurrencyCode($currencyExchangeRate->getCurrencyCode());
 
             if (empty($averageExchangeRate)) {
                 $averageExchangeRate = new CurrencyExchangeRateAverage();
@@ -94,6 +92,4 @@ class AverageExchangeRatesCalculator
             (($rateAverage->getAverageRate() * $currency->getComputedCount()) + $currency->getRate()) / ($currency->getComputedCount() + 1);
         return $nextAverageRate;
     }
-
-
 }
